@@ -1,0 +1,57 @@
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Define the ODE function
+def f(x, y) :
+	return x + y
+
+	# Euler method implementation
+	def euler_method(f, x0, y0, h, x_end) :
+	x_values = [x0]
+	y_values = [y0]
+	while x_values[-1] < x_end :
+		x = x_values[-1]
+		y = y_values[-1]
+		y_new = y + h * f(x, y)
+		x_values.append(x + h)
+		y_values.append(y_new)
+		return x_values, y_values
+
+		# Runge - Kutta method of order 4 implementation
+		def runge_kutta_4(f, x0, y0, h, x_end) :
+		x_values = [x0]
+		y_values = [y0]
+		while x_values[-1] < x_end :
+			x = x_values[-1]
+			y = y_values[-1]
+			k1 = h * f(x, y)
+			k2 = h * f(x + h / 2, y + k1 / 2)
+			k3 = h * f(x + h / 2, y + k2 / 2)
+			k4 = h * f(x + h, y + k3)
+			y_new = y + (k1 + 2 * k2 + 2 * k3 + k4) / 6
+			x_values.append(x + h)
+			y_values.append(y_new)
+			return x_values, y_values
+
+			# Initial conditions
+			x0 = 1
+			y0 = 1
+			x_end = 5
+			h = 1.2250
+
+			# Using Euler method
+			euler_x, euler_y = euler_method(f, x0, y0, h, x_end)
+
+			# Using Runge - Kutta method of order 4
+			rk4_x, rk4_y = runge_kutta_4(f, x0, y0, h, x_end)
+
+			# Plotting the results
+			plt.figure(figsize = (10, 6))
+			plt.plot(euler_x, euler_y, label = "Euler Method", marker = 'o')
+			plt.plot(rk4_x, rk4_y, label = "Runge-Kutta Method (Order 4)", marker = 's')
+			plt.title("Solution of the ODE")
+			plt.xlabel("x")
+			plt.ylabel("y")
+			plt.legend()
+			plt.grid(True)
+			plt.show()
